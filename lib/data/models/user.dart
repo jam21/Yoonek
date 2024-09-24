@@ -1,4 +1,3 @@
-import 'package:yoonek/data/models/mapper.dart';
 import 'package:yoonek/domain/entities/session.dart';
 
 class SessionModel extends Session {
@@ -24,7 +23,6 @@ class SessionModel extends Session {
         issued: json['.issued']);
   }
 
-  @override
   Map<String, dynamic> toJson() {
     return {
       'userName': userName,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yoonek/data/datasource/remote.dart';
 import 'package:yoonek/data/datasource/user.dart';
 import 'package:yoonek/data/repository/user.dart';
 import 'package:yoonek/domain/repositories/user.dart';
@@ -41,11 +40,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  
 
   void _incrementCounter() {
     setState(() {
-      _counter++;
     });
   }
 

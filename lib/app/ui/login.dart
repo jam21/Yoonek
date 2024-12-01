@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
+import 'package:yoonek/app/ui/widgets.dart';
 import 'package:yoonek/app/widgets.dart';
+import 'package:yoonek/data/datasource/user.dart';
+import 'package:yoonek/data/network/apis.dart';
+import 'package:yoonek/data/repository/user.dart';
 import 'package:yoonek/domain/entities/session.dart';
+import 'package:yoonek/domain/repositories/user.dart';
 import 'package:yoonek/domain/usecases/user.dart';
+import 'package:yoonek/main.dart';
 
-class SessionProvider with ChangeNotifier {
+class SessionProvider extends ResponseNotifier<Session> {
   final LoginUserUsecase loginUserUsecase;
-  Session? session;
+  // Session? session;
 
   SessionProvider({required this.loginUserUsecase});
 
@@ -15,74 +20,90 @@ class SessionProvider with ChangeNotifier {
       {required String userName,
       required String password,
       required String grantType}) async {
-    session = await loginUserUsecase.call(
-        userName: userName, password: password, grantType: grantType);
+    response = Loading();
     notifyListeners();
+    try {
+      Session data = await loginUserUsecase.call(
+          userName: userName, password: password, grantType: grantType);
+      response = Success(data: data);
+    } on Exception catch (e) {
+      response = Error(exception: e);
+    }
+
+    notifyListeners();
+
+    // session = await loginUserUsecase.call(
+    //     userName: userName, password: password, grantType: grantType);
+    // notifyListeners();
   }
+
+  @override
+  Response<Session>? response;
 }
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginScreen extends StatelessWidget {
+  LoginScreen({super.key});
 
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final SessionRepository sessionRepository =
+        SessionRepositoryImpl(dataSource: SessionRemoteDataSource());
+    final LoginUserUsecase loginUserUsecase =
+        LoginUserUsecase(repository: sessionRepository);
     final SessionProvider sessionProvider =
-        Provider.of<SessionProvider>(context);
+        SessionProvider(loginUserUsecase: loginUserUsecase);
 
     return Scaffold(
-        body: FutureBuilder(
-            future: sessionProvider.loginUserUsecase(
-                userName: "arslan.khalid",
-                password: "Abc123",
-                grantType: "password"),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return Container(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Expanded(
-                        child: Center(
-                      child: SvgPicture.asset(
-                        'assets/svgs/logo.svg',
-                        width: 100,
-                        height: 100,
+        body: ResponseListenableBuilder(
+            listenable: sessionProvider,
+            onResponseSuccess: (context, data) {
+              Navigator.pushReplacementNamed(context, Routes.dashboard);
+            },
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  Expanded(
+                      child: Center(
+                    child: SvgPicture.asset(
+                      'assets/svgs/logo.svg',
+                      width: 100,
+                      height: 100,
+                    ),
+                  )),
+                  Expanded(
+                      child: Column(
+                    children: [
+                      TextField(
+                        controller: _userNameController,
+                        decoration: const InputDecoration(
+                            hintText: "User name",
+                            prefixIcon: Icon(Icons.person_outline)),
                       ),
-                    )),
-                    Expanded(
-                        child: Column(
-                      children: [
-                        TextField(
-                          controller: _userNameController,
-                          decoration: const InputDecoration(
-                              hintText: "User name",
-                              prefixIcon: Icon(Icons.person_outline)),
-                        ),
-                        PasswordField(
-                          controller: _passwordController,
-                          hintText: "Password",
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        ElevatedButton(
-                            onPressed: () {
-                            },
-                            child: const Padding(
-                                padding: EdgeInsets.only(left: 16, right: 16),
-                                child: Text("Sign In")))
-                      ],
-                    ))
-                  ],
-                ),
-              );
-            }));
+                      PasswordField(
+                        controller: _passwordController,
+                        hintText: "Password",
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      ElevatedButton(
+                          onPressed: () {
+                            sessionProvider.loginUser(
+                                userName: "arslan.khalid",
+                                password: "Abc123",
+                                grantType: "password");
+                          },
+                          child: const Padding(
+                              padding: EdgeInsets.only(left: 16, right: 16),
+                              child: Text("Sign In")))
+                    ],
+                  ))
+                ],
+              ),
+            )));
   }
 }

@@ -19,8 +19,8 @@ class SessionModel extends Session {
         expiresIn: json['expires_in'],
         refreshToken: json['refresh_token'],
         authToken: json['AuthToken'],
-        expires: json['.expires'],
-        issued: json['.issued']);
+        expires: DateTime.parse(json['.expires']),
+        issued: DateTime.parse(json['.issued']));
   }
 
   Map<String, dynamic> toJson() {

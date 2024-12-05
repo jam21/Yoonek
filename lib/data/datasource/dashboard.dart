@@ -8,6 +8,7 @@ import 'package:yoonek/domain/entities/pay_period.dart';
 import 'package:yoonek/domain/entities/policy.dart';
 import 'package:yoonek/domain/entities/reporter.dart';
 import 'package:yoonek/domain/entities/supervisor.dart';
+import 'package:yoonek/domain/repositories/dashboard.dart';
 
 abstract class DashboardDataSource {
   Future<List<Event>> getEvents(int employeeID, int org);
@@ -32,7 +33,7 @@ class DashboardRemoteDataSource extends RemoteDataSource implements DashboardDat
 
   @override
   Future<List<Event>> getEvents(int employeeID, int org) async {
-    List<dynamic> response = safeApiCall(() async {
+    List<dynamic> response = await safeApiCall(() async {
       return getEventsRequest(employeeID:employeeID, org:org);
     });
     return response.map((e){return Event.fromJson(e);}).toList();
@@ -40,7 +41,7 @@ class DashboardRemoteDataSource extends RemoteDataSource implements DashboardDat
 
   @override
   Future<List<Announcement>> getAnnouncements(int employeeID, int org) async {
-    List<dynamic> response = safeApiCall(() async {
+    List<dynamic> response = await safeApiCall(() async {
       return getAnnouncementsRequest(employeeID:employeeID, org:org);
     });
 
@@ -49,7 +50,7 @@ class DashboardRemoteDataSource extends RemoteDataSource implements DashboardDat
 
   @override
   Future<List<Reporter>> getReporters(Map<String, String> params) async {
-    List<dynamic> response = safeApiCall(() async {
+    List<dynamic> response = await safeApiCall(() async {
       return getReportersRequest(params);
     });
     return response.map((e){return Reporter.fromJson(e);}).toList();
@@ -57,7 +58,7 @@ class DashboardRemoteDataSource extends RemoteDataSource implements DashboardDat
 
   @override
   Future<List<Policy>> getPolicies(int employeeID, int org) async {
-    List<dynamic> response = safeApiCall(() async {
+    List<dynamic> response = await safeApiCall(() async {
       return getPoliciesRequest(employeeID:employeeID, org:org);
     });
 
@@ -83,3 +84,43 @@ class DashboardRemoteDataSource extends RemoteDataSource implements DashboardDat
   }
 }
 
+class DashboardRepositoryImpl extends DashboardRepository{
+  final DashboardDataSource dashboardDataSource;
+  DashboardRepositoryImpl({required this.dashboardDataSource});
+
+  @override
+  Future<List<Announcement>> getAnnouncements(int employeeID, int org) {    
+    return dashboardDataSource.getAnnouncements(employeeID, org);
+  }
+
+  @override
+  Future<List<Event>> getEvents(int employeeID, int org) {    
+    return dashboardDataSource.getEvents(employeeID, org);
+  }
+
+  @override
+  Future<List<LeaveBalance>> getLeaveBalances(Map<String, String> params) {    
+    return dashboardDataSource.getLeaveBalances(params);
+  }
+
+  @override
+  Future<List<PayPeriod>> getPayPeriod(int orgId) {    
+    return dashboardDataSource.getPayPeriod(orgId);
+  }
+
+  @override
+  Future<List<Policy>> getPolicies(int employeeID, int org) {   
+    return dashboardDataSource.getPolicies(employeeID, org);
+  }
+
+  @override
+  Future<List<Reporter>> getReporters(Map<String, String> params) {    
+    return dashboardDataSource.getReporters(params);
+  }
+
+  @override
+  Future<List<Supervisor>> getSupervisor(Map<String, String> params) {    
+    return dashboardDataSource.getSupervisor(params);
+  }
+  
+}

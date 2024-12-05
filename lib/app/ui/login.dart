@@ -10,11 +10,11 @@ import 'package:yoonek/domain/repositories/user.dart';
 import 'package:yoonek/domain/usecases/user.dart';
 import 'package:yoonek/main.dart';
 
-class SessionProvider extends ResponseNotifier<Session> {
+class SessionNotifier extends ResponseNotifier<Session> {
   final LoginUserUsecase loginUserUsecase;
   // Session? session;
 
-  SessionProvider({required this.loginUserUsecase});
+  SessionNotifier({required this.loginUserUsecase});
 
   Future<void> loginUser(
       {required String userName,
@@ -44,8 +44,8 @@ class SessionProvider extends ResponseNotifier<Session> {
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
-  final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController(text: "arslan.khalid");
+  final TextEditingController _passwordController = TextEditingController(text: "Abc123");
 
   @override
   Widget build(BuildContext context) {
@@ -53,8 +53,8 @@ class LoginScreen extends StatelessWidget {
         SessionRepositoryImpl(dataSource: SessionRemoteDataSource());
     final LoginUserUsecase loginUserUsecase =
         LoginUserUsecase(repository: sessionRepository);
-    final SessionProvider sessionProvider =
-        SessionProvider(loginUserUsecase: loginUserUsecase);
+    final SessionNotifier sessionProvider =
+        SessionNotifier(loginUserUsecase: loginUserUsecase);
 
     return Scaffold(
         body: ResponseListenableBuilder(
@@ -93,8 +93,10 @@ class LoginScreen extends StatelessWidget {
                       ElevatedButton(
                           onPressed: () {
                             sessionProvider.loginUser(
-                                userName: "arslan.khalid",
-                                password: "Abc123",
+                              userName: _userNameController.text,
+                              password: _passwordController.text,
+                                // userName: "arslan.khalid",
+                                // password: "Abc123",
                                 grantType: "password");
                           },
                           child: const Padding(

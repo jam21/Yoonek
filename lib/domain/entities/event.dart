@@ -2,7 +2,7 @@ class Event {
   final double applicationId;
   final String dateFrom;
   final String dateTo;
-  final String description;
+  final String? description;
   final double employeeId;
   final double eventId;
   final String eventName;
@@ -24,7 +24,7 @@ class Event {
       applicationId: json['APPLICATION_ID'] as double,
       dateFrom: json['DATE_FROM'] as String,
       dateTo: json['DATE_TO'] as String,
-      description: json['DESCRIPTION'] as String,
+      description: json['DESCRIPTION'] as String?,
       employeeId: json['EMPLOYEE_ID'] as double,
       eventId: json['EVENT_ID'] as double,
       eventName: json['EVENT_NAME'] as String,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yoonek/app/ui/dashboard.dart';
+import 'package:yoonek/app/ui/dashboard/dashboard.dart';
 import 'package:yoonek/data/datasource/user.dart';
 import 'package:yoonek/data/repository/user.dart';
 import 'package:yoonek/domain/repositories/user.dart';

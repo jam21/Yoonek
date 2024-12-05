@@ -28,7 +28,9 @@ class ResponseListenableBuilder<T> extends StatelessWidget {
   }
 
   static void _onError(BuildContext context, Exception exception) {
-    showDialog(context: context, builder: (context){return AlertDialog(
+        Future.delayed(Duration.zero, () {
+      if (context.mounted) {
+        showDialog(context: context, builder: (context){return AlertDialog(
       title: Text("Error"),
       content: Text(exception.toString()),
       actions: [
@@ -37,6 +39,10 @@ class ResponseListenableBuilder<T> extends StatelessWidget {
         }, child: Text("OK"))
       ],
     );});
+      }
+    });
+
+    
   }
 
   @override

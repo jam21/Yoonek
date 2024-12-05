@@ -20,6 +20,6 @@ class SessionRemoteDataSource extends RemoteDataSource
       required String grantType}) async {
     dynamic response = await safeApiCall(() => loginUserRequest(
         userName: userName, password: password, grantType: grantType));
-    return SessionModel.fromJson(response);
+    return Session.fromJson(response);
   }
 }

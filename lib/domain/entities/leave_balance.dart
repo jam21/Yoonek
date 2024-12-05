@@ -3,6 +3,7 @@ class LeaveBalance {
   final String name;
   final double total;
   final double availed;
+  double get balance=> total-availed;
 
   LeaveBalance({
     required this.leaveType,

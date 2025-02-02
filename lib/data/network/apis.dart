@@ -14,13 +14,13 @@ extension ExtendString on String{
 }
 String baseURL = 'yoonek.thzeal.com';
 String loginPath = '/ZealERPTest/token';
-const String getEventsPath = '/ZealERPTest/api/AnnouncementAndMapping/GetDataForEventTile';
-const String getLeaveBalancesPath = '/ZealERPTest/api/LeaveCount/GetLeaveBalanceForCard/';
-const String getAnnouncementsPath = '/ZealERPTest/api/AnnouncementAndMapping/GetDataForAnnouncementTile';
-const String getReportersPath = '/ZealERPTest/api/EmployeeSetup/GetReportesData/';
-const String getPoliciesPath = '/ZealERPTest/api/PlanMapping/GetDataForPolicyTile';
+const String getEventsPath = '/ZealERPTest/api/HCMMobileApp/Events';
+const String getLeaveBalancesPath = '/ZealERPTest/api/HCMMobileApp/Leaves/';
+const String getAnnouncementsPath = '/ZealERPTest/api/HCMMobileApp/Announcements';
+const String getReportersPath = '/ZealERPTest/api/HCMMobileApp/Reporters/';
+const String getPoliciesPath = '/ZealERPTest/api/HCMMobileApp/Policies';
 const String getSupervisorPath = '/ZealERPTest/api/EmployeeSetup/GetSuperviosrData/';
-const String getPayPeriodPath = '/ZealERPTest/api/SalarySlip/GetPayPeriodDates';
+const String getPayPeriodPath = '/ZealERPTest/api/HCMMobileApp/PayPeriods';
 
 Future<http.Response> loginUserRequest({required String userName, required String password, required String grantType}){
   Uri uri = baseURL.toHttps(loginPath);
@@ -75,7 +75,13 @@ Future<http.Response> getPoliciesRequest({required int employeeID, required int 
     "EmployeeID": employeeID.toString(),
     "o": org.toString(),
   });
-  return logableHttp.get(uri);
+  //   return logableHttp.post(
+  //   uri,
+  //   headers: {"Content-Type": "application/json", "Authorization":"${Session.current().tokenType} ${Session.current().accessToken}"},
+  //   body: jsonEncode(params),
+  // );
+
+  return logableHttp.get(uri, headers: {"Content-Type": "application/json", "Authorization":"${Session.current().tokenType} ${Session.current().accessToken}"},);
 }
 
 // Fetch Supervisor

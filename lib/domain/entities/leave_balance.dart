@@ -1,5 +1,5 @@
 class LeaveBalance {
-  final int leaveType;
+  final String leaveType;
   final String name;
   final double total;
   final double availed;
@@ -14,9 +14,9 @@ class LeaveBalance {
 
   factory LeaveBalance.fromJson(Map<String, dynamic> json) {
     return LeaveBalance(
-      leaveType: json['LEAVE_TYPE'] as int,
+      leaveType: json['LEAVE_TYPE'] as String,
       name: json['NAME'] as String,
-      total: json['TOTALCOUNT'] as double,
+      total: json['LEAVE_COUNT'] as double,
       availed: json['AVAILED'] as double,
     );
   }

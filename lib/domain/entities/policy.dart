@@ -1,7 +1,7 @@
 class Policy {
   final double applicationId;
-  final String dateFrom;
-  final String? dateTo;
+  final DateTime dateFrom;
+  final DateTime? dateTo;
   final String description;
   final double policyAttachmentId;
   final String policyName;
@@ -20,10 +20,13 @@ class Policy {
   });
 
   factory Policy.fromJson(Map<String, dynamic> json) {
+    String? dateToStr = json['DATE_TO'];
+    DateTime? dateTo = dateToStr!=null ? DateTime.parse(dateToStr):null;
+
     return Policy(
       applicationId: json['APPLICATION_ID'] as double,
-      dateFrom: json['DATE_FROM'] as String,
-      dateTo: json['DATE_TO'] as String?,
+      dateFrom: DateTime.parse(json['DATE_FROM']),
+      dateTo: dateTo,
       description: json['DESCRIPTION'] as String,
       policyAttachmentId: json['POLICY_ATTACHMENT_ID'] as double,
       policyName: json['POLICY_NAME'] as String,

@@ -1,5 +1,5 @@
-extension DateExtension on DateTime{
-  String toSlashedDDMMYYY(){    
-    return "${day.toString()}/${month.toString()}/${year.toString()}";
+extension DateExtension on DateTime?{
+  String toSlashedDDMMYYY(){      
+    return this==null ? "" : "${this?.day.toString()}/${this?.month.toString()}/${this?.year.toString()}";
   }
 }

@@ -26,10 +26,6 @@ class _DashboardState extends State<DashboardScreen> {
   late PolicyNotifier policyNotifier;
   late EventsNotifier eventsNotifier;
 
-  List<Event> events = [];
-  List<LeaveBalance> leaveBalances = [];
-  List<Policy> policies = [];
-
   @override
   void initState() {
     super.initState();
@@ -53,6 +49,7 @@ class _DashboardState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("Dashboard");
     return Scaffold(
       backgroundColor: Color(0XFFE7EBEE),
       appBar: AppBar(
@@ -70,6 +67,7 @@ class _DashboardState extends State<DashboardScreen> {
           child: Column(
             children: [
               LayoutBuilder(builder: (context, constraint) {
+                debugPrint("LayoutBuilder-1");
                 return Row(
                   children: [
                     SizedBox(
@@ -473,9 +471,9 @@ class _DashboardState extends State<DashboardScreen> {
                         child: ResponseListenableBuilder(
                           listenable: eventsNotifier,
                           onResponseSuccess: (context, data) => {
-                            setState(() {
-                              events = data as List<Event>;
-                            })
+                            // setState(() {
+                            //   events = data as List<Event>;
+                            // })
                           },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -492,9 +490,10 @@ class _DashboardState extends State<DashboardScreen> {
                                     height:
                                         constraints.maxWidth * (188 / 191) - 56,
                                     child: ListView.builder(
-                                        itemCount: events.length,
+                                        itemCount: eventsNotifier.getData()?.length,
                                         shrinkWrap: true,
                                         itemBuilder: (context, index) {
+                                          var data = (eventsNotifier.getData()??[])[index];
                                           return Padding(
                                             padding: const EdgeInsets.all(2.0),
                                             child: Container(
@@ -507,10 +506,7 @@ class _DashboardState extends State<DashboardScreen> {
                                                 padding: const EdgeInsets.all(4),
                                                 child: Center(
                                                     child: Text(
-                                                  (eventsNotifier.response
-                                                          as Success)
-                                                      .data[index]
-                                                      .eventName,
+                                                  data.eventName,
                                                   style: GoogleFonts.manrope(
                                                       fontSize: 11,
                                                       fontWeight:
@@ -541,9 +537,9 @@ class _DashboardState extends State<DashboardScreen> {
                         child: ResponseListenableBuilder(
                           listenable: leaveBalanceNotifier,
                           onResponseSuccess: (context, data) => {
-                            setState(() {
-                              leaveBalances = data as List<LeaveBalance>;
-                            })
+                            // setState(() {
+                            //   leaveBalances = data as List<LeaveBalance>;
+                            // })
                           },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -586,10 +582,11 @@ class _DashboardState extends State<DashboardScreen> {
                                 return SizedBox(
                                   height: constrints.maxWidth * (188 / 191) - 82,
                                   child: ListView.builder(
-                                      itemCount: leaveBalances.length,
+                                      itemCount: leaveBalanceNotifier.getData()?.length,
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
-                                        var data = leaveBalances[index];
+                                        var balances = leaveBalanceNotifier.getData()??[];
+                                        var data = balances[index];
                                         return Row(children: [
                                           Expanded(
                                             child: Text(
@@ -646,9 +643,9 @@ class _DashboardState extends State<DashboardScreen> {
                         child: ResponseListenableBuilder(
                           listenable: policyNotifier,
                           onResponseSuccess: (context, data) => {
-                            setState(() {
-                              policies = data as List<Policy>;
-                            })
+                            // setState(() {
+                            //   policies = data as List<Policy>;
+                            // })
                           },
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -689,10 +686,11 @@ class _DashboardState extends State<DashboardScreen> {
                                 return SizedBox(
                                   height: constrints.maxWidth * (188 / 191) - 82,
                                   child: ListView.builder(
-                                      itemCount: policies.length,
+                                      itemCount: policyNotifier.getData()?.length,
                                       shrinkWrap: true,
                                       itemBuilder: (context, index) {
-                                        var data = policies[index];
+
+                                        var data = (policyNotifier.getData()??[])[index];
                                         return Row(children: [
                                           Expanded(
                                             child: Center(

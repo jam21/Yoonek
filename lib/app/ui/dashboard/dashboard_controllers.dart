@@ -27,6 +27,11 @@ class EventsNotifier extends ResponseNotifier<List<Event>> {
 
   @override
   Response<List<Event>>? response;
+
+  @override
+  List<Event>? getData() {    
+    return super.getData()??[];
+  }
 }
 
 class LeaveBalanceNotifier extends ResponseNotifier<List<LeaveBalance>> {
@@ -54,6 +59,12 @@ class LeaveBalanceNotifier extends ResponseNotifier<List<LeaveBalance>> {
 
   @override
   Response<List<LeaveBalance>>? response;
+
+  @override
+  List<LeaveBalance>? getData() {
+    // TODO: implement getData
+    return super.getData()??[];
+  }
 }
 
 class AnnouncementNotifier extends ResponseNotifier<List<Announcement>> {
@@ -108,6 +119,12 @@ class PolicyNotifier extends ResponseNotifier<List<Policy>> {
 
   @override
   Response<List<Policy>>? response;
+
+  @override
+  List<Policy>? getData() {
+    // TODO: implement getData
+    return super.getData()??[];
+  }
 }
 
 class PayperiodNotifier extends ResponseNotifier<List<PayPeriod>> {
@@ -135,4 +152,10 @@ class PayperiodNotifier extends ResponseNotifier<List<PayPeriod>> {
 
   @override
   Response<List<PayPeriod>>? response;
+
+  @override
+  List<PayPeriod>? getData() {
+    // TODO: implement getData
+    return super.getData()??[];
+  }
 }

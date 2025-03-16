@@ -46,22 +46,27 @@ class ResponseListenableBuilder<T> extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return ListenableBuilder(
         listenable: listenable,
         child: child,
         builder: (context, child) {
-          if (listenable.response is Error && onResponseError != null) {
-            onResponseError!(context, (listenable.response as Error).exception);
+          debugPrint("ResponseListenableBuilder ${listenable.response}");
+          if (listenable.response is Error && onResponseError != null) {            
+            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+              if (context.mounted) {
+                onResponseError!(context, (listenable.response as Error).exception);
+              }
+            },);
           }
 
           if (listenable.response is Success && onResponseSuccess != null) {
-            Future.delayed(Duration.zero, () {
+            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
               if (context.mounted) {
                 onResponseSuccess!(
                     context, (listenable.response as Success).data);
               }
-            });
+            },);
           }
           return Stack(alignment: Alignment.center, children: [
             child ?? SizedBox.shrink(),

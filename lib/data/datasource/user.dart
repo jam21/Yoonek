@@ -1,6 +1,5 @@
 
 import 'package:yoonek/data/datasource/remote.dart';
-import 'package:yoonek/data/models/user.dart';
 import 'package:yoonek/data/network/apis.dart';
 import 'package:yoonek/domain/entities/session.dart';
 

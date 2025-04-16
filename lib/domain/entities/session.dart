@@ -8,17 +8,7 @@ class Session {
   late DateTime issued;
   late DateTime expires;
 
-  // Session(
-  //     {required this.userName,
-  //     required this.accessToken,
-  //     required this.tokenType,
-  //     required this.expiresIn,
-  //     required this.refreshToken,
-  //     required this.authToken,
-  //     required this.expires,
-  //     required this.issued});
-
-        static final Session _instance = Session._internal();
+  static final Session _instance = Session._internal();
 
   Session._internal();
 
